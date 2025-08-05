@@ -27,7 +27,7 @@ write_header = not file.exists()
 with file.open("a", newline="", encoding="utf-8") as f:
     w = csv.writer(f)
     if write_header:
-        w.writerow(["date", "company", "visits", "jobs", "twitter"])
+        w.writerow(["date", "company", "founded", "hq", "cyber"])
     w.writerows(rows)
 
 print(f"{len(rows)} rows appended on {today}.")
