@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Refresh target list
+        run: python verify_targets.py
+
       - name: Execute scraper
         run: python scraper.py
 
