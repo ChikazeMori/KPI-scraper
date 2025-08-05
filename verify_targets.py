@@ -6,15 +6,17 @@ SEARCH = "https://www.bing.com/search?q="      # scrape-friendly
 CRAFT  = "https://craft.co"
 
 def craft_slug(name: str) -> str | None:
-    query = f"site:craft.co {name}"
-    html  = requests.get(SEARCH + quote_plus(query),
-                         headers={"User-Agent": "Mozilla/5.0"}).text
-    soup  = BeautifulSoup(html, "html.parser")
-    for a in soup.select("h2 > a[href^='https://craft.co']"):
-        m = re.match(r"https://craft.co(/[\w\\-]+)", a["href"])
-        if m:
-            return m.group(1)          # e.g. /anthropic
+    query   = f"site:craft.co {name}"
+    url     = f"https://www.bing.com/search?q={quote_plus(query)}"
+    html    = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}).text
+    soup    = BeautifulSoup(html, "html.parser")
+
+    # NEW selector — Bing now wraps result links in <li class="b_algo"> <a …>
+    for a in soup.select("li.b_algo a[href^='https://craft.co']"):
+        slug = a["href"].split("https://craft.co", 1)[1]
+        return slug.strip()
     return None
+
 
 good, bad = [], []
 for name in csv.reader(open("candidate_companies.csv")):
