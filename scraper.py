@@ -15,12 +15,12 @@ for name, path in TARGETS.items():
     html = requests.get(BASE + path, timeout=15).text
     soup = BeautifulSoup(html, "lxml")
     try:
-        visits  = soup.select_one("span[data-attr='visits']").text.strip()
-        jobs    = soup.select_one("span[data-attr='jobs']").text.strip()
-        twitter = soup.select_one("a[data-attr='twitter']").text.strip()
+        hq      = soup.select_one('a[data-attr="hq"]').text.strip()
+        founded = soup.select_one('span[data-attr="founded"]').text.strip()
+        cyber   = soup.select_one('span[data-attr="cybersecurity-rating"]').text.strip()
     except AttributeError:
         visits = jobs = twitter = "N/A"
-    rows.append([today, name, visits, jobs, twitter])
+    rows.append([today, name, founded, hq, cyber])
 
 file = pathlib.Path("genai_kpi.csv")
 write_header = not file.exists()
