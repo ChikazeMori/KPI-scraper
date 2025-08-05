@@ -10,6 +10,8 @@ today = datetime.date.today().isoformat()
 rows = []
 
 for name, path in TARGETS.items():
+    if not path.startswith("/"):
+        path = "/" + path            # auto-fix missing slash
     html = requests.get(BASE + path, timeout=15).text
     soup = BeautifulSoup(html, "lxml")
     try:
