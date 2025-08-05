@@ -17,7 +17,7 @@ def craft_slug(name: str) -> str | None:
     return None
 
 good, bad = [], []
-for name, what, funding, year, city, country in csv.reader(open("candidate_companies.csv")):
+for name in csv.reader(open("candidate_companies.csv")):
     slug = craft_slug(name[0])
     (good if slug else bad).append([name[0], slug or ""])
 
